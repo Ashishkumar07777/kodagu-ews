@@ -1,0 +1,219 @@
+/* ============================================================
+   KodaguEWS - Map Page Styles
+   ============================================================ */
+
+body {
+    background: #0a0f1a !important; /* Force deep dark background as per spec */
+}
+
+.map-page-container {
+    padding: var(--space-6);
+    height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Map Header */
+.map-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-4);
+    animation: fadeInDown 0.4s ease;
+}
+
+.map-header-left {
+    display: flex;
+    align-items: center;
+}
+
+.map-header-left .page-title {
+    font-size: var(--font-size-2xl);
+}
+
+.map-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.map-control-btn {
+    padding: var(--space-2) var(--space-4);
+}
+
+.map-stat {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-1);
+    padding: var(--space-2) var(--space-4);
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+}
+
+.map-stat-value {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.map-stat-label {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Map Canvas */
+.map-wrapper {
+    flex: 1;
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: fadeInUp 0.5s ease 0.1s both;
+}
+
+.map-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #E5E5E5;
+}
+
+/* Loading Overlay */
+#map-loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 15, 26, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #10b981;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    font-size: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+#map-loading-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(16, 185, 129, 0.2);
+    border-top-color: #10b981;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 16px;
+}
+
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+/* Light map tile overrides (matching design) */
+.leaflet-container {
+    background: #E5E5E5; /* Generic light map bg */
+    font-family: var(--font-family);
+}
+
+/* Let the default leaflet zoom controls be light themed as per the screenshot */
+
+/* Map Legend */
+.map-legend {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 12px;
+    padding: var(--space-4);
+    min-width: 140px;
+}
+
+.legend-title {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-3);
+}
+
+.legend-items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+}
+
+/* Sensor Overlay */
+.map-sensor-count {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    background: rgba(10, 15, 26, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.map-sensor-count svg {
+    color: var(--primary);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+    .map-page-container {
+        padding: var(--space-4);
+    }
+
+    .map-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-3);
+    }
+
+    .map-controls {
+        flex-wrap: wrap;
+    }
+}

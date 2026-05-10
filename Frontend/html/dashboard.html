@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="KodaguEWS Command Center - Real-time overview of the Kodagu region with weather, alerts, and geological events.">
+    <title>KodaguEWS - Command Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+    <!-- ===== NAVIGATION BAR ===== -->
+    <nav class="navbar" id="navbar">
+        <a href="dashboard.html" class="navbar-logo">
+            <div class="logo-icon">
+                <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+                    <circle cx="14" cy="14" r="12" stroke="#00D9A6" stroke-width="2"/>
+                    <path d="M8 14 L11 10 L14 16 L17 8 L20 14" stroke="#00D9A6" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <span class="logo-text">Kodagu<span class="logo-highlight">EWS</span></span>
+        </a>
+
+        <div class="navbar-nav">
+            <a href="dashboard.html" class="nav-link active" id="navDashboard">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                Dashboard
+            </a>
+            <a href="live-map.html" class="nav-link" id="navLiveMap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 10-16 0c0 3 2.7 7 8 11.7z"/></svg>
+                Live Map
+            </a>
+            <a href="risk-predictor.html" class="nav-link" id="navRiskPredictor">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                Risk Predictor <span class="nav-badge">Upcoming</span>
+            </a>
+            <a href="alerts.html" class="nav-link" id="navAlerts">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+                Alerts <span class="nav-badge">Upcoming</span>
+            </a>
+        </div>
+
+        <div class="navbar-user">
+            <span class="user-name">👤 Ashish Kumar</span>
+            <button class="user-avatar" id="userMenu" onclick="toggleUserMenu()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="page-content">
+        <div class="dashboard-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-header-text">
+                    <h1 class="page-title">Command Center</h1>
+                    <p class="page-subtitle">Real-time overview of the Kodagu region</p>
+                </div>
+                <div class="page-header-actions">
+                    <button class="btn btn-outline" id="uploadIntelBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        Upload Intel
+                    </button>
+                    <a href="live-map.html" class="btn btn-filled" id="liveMapBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 10-16 0c0 3 2.7 7 8 11.7z"/></svg>
+                        Live Map
+                    </a>
+                </div>
+            </div>
+
+            <!-- Alert Banner -->
+            <div class="alert-banner alert-banner-green" id="alertBanner">
+                <div class="alert-banner-left" style="flex-direction: column; align-items: flex-start; gap: 16px;">
+                    <div style="display: flex; align-items: flex-start; gap: var(--space-4);">
+                        <div class="alert-icon-circle green" style="background: transparent; color: #0A0E17; border: 1px solid rgba(10,14,23,0.3); width: 32px; height: 32px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+                        </div>
+                        <div class="alert-banner-info">
+                            <h2 class="alert-banner-title">LEVEL GREEN ALERT</h2>
+                            <p class="alert-banner-desc">No significant landslide risk detected. Conditions are stable.</p>
+                        </div>
+                    </div>
+                    <div class="alert-banner-tags" style="margin-left: 48px; margin-bottom: 0;">
+                        <span class="alert-tag">Madikeri</span>
+                        <span class="alert-tag">Virajpet</span>
+                        <span class="alert-tag">Somwarpet</span>
+                        <span class="alert-tag">Kushalnagar</span>
+                        <span class="alert-tag">Bhagamandala</span>
+                    </div>
+                </div>
+                <div class="alert-banner-right" style="position: relative; overflow: hidden; align-items: flex-end; justify-content: space-between;">
+                    <svg class="bg-icon" width="200" height="200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="position: absolute; right: -20px; top: -50px; opacity: 0.1; color: #0A0E17;"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    <div class="alert-banner-tags" style="position: relative; z-index: 2; align-self: flex-start; justify-content: flex-end; width: 100%;">
+                        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+                            <span class="meta-label" style="font-weight: 600; letter-spacing: 0.05em; font-size: 0.65rem;">VALID UNTIL</span>
+                            <span class="meta-value" style="font-size: 0.95rem; font-family: monospace;">May 04, 20:32</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weather & Telemetry Cards -->
+            <div class="metrics-grid">
+                <!-- Current Weather Card -->
+                <div class="metric-card" id="weatherCard">
+                    <div class="metric-card-header">
+                        <div class="metric-icon weather-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                        </div>
+                        <span class="metric-card-label">Current Weather</span>
+                    </div>
+                    <div class="weather-main">
+                        <div class="weather-temp">
+                            <span class="temp-value">25.9</span>
+                            <span class="temp-unit">°C</span>
+                        </div>
+                        <div class="weather-condition">
+                            <div class="weather-icon-large" style="background: rgba(139, 92, 246, 0.15); width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><path d="M20 16.2A4.5 4.5 0 0017.5 8h-1.8A7 7 0 104 14.9"/><path d="M16 14v6"/><path d="M8 14v6"/><path d="M12 16v6"/></svg>
+                            </div>
+                            <span class="condition-label">Sunny</span>
+                        </div>
+                    </div>
+                    <div class="weather-details">
+                        <div class="weather-detail-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg>
+                            <span class="detail-label">Rainfall</span>
+                            <span class="detail-value">0.1 <small>mm/hr</small></span>
+                        </div>
+                        <div class="weather-detail-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.59 4.59A2 2 0 1111 8H2m10.59 11.41A2 2 0 1014 16H2m15.73-8.27A2.5 2.5 0 1119.5 12H2"/></svg>
+                            <span class="detail-label">Wind</span>
+                            <span class="detail-value">12.1 <small>km/h</small></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Environmental Telemetry Card -->
+                <div class="metric-card" id="telemetryCard">
+                    <div class="metric-card-header">
+                        <div class="metric-icon telemetry-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                        </div>
+                        <span class="metric-card-label">Environmental Telemetry</span>
+                    </div>
+                    <div class="telemetry-grid">
+                        <div class="telemetry-item">
+                            <span class="telemetry-label">24h Accumulated Rain</span>
+                            <div class="telemetry-value-row">
+                                <span class="telemetry-value" id="rain24h">—</span>
+                                <span class="telemetry-unit">mm</span>
+                            </div>
+                            <div class="progress-bar-bg"><div class="progress-bar-fill blue" id="rain24hBar" style="width: 0%"></div></div>
+                        </div>
+                        <div class="telemetry-item">
+                            <span class="telemetry-label">72h Accumulated Rain</span>
+                            <div class="telemetry-value-row">
+                                <span class="telemetry-value" id="rain72h">—</span>
+                                <span class="telemetry-unit">mm</span>
+                            </div>
+                            <div class="progress-bar-bg"><div class="progress-bar-fill blue" id="rain72hBar" style="width: 0%"></div></div>
+                        </div>
+                        <div class="telemetry-item">
+                            <span class="telemetry-label">7-Day Accumulated Rain</span>
+                            <div class="telemetry-value-row">
+                                <span class="telemetry-value" id="rain7d">—</span>
+                                <span class="telemetry-unit">mm</span>
+                            </div>
+                            <div class="progress-bar-bg"><div class="progress-bar-fill blue" id="rain7dBar" style="width: 0%"></div></div>
+                        </div>
+                        <div class="telemetry-item">
+                            <span class="telemetry-label">Soil Moisture Saturation</span>
+                            <div class="telemetry-value-row">
+                                <span class="telemetry-value" id="soilMoisture">—</span>
+                                <span class="telemetry-unit">%</span>
+                            </div>
+                            <div class="progress-bar-bg"><div class="progress-bar-fill orange" id="soilBar" style="width: 0%"></div></div>
+                        </div>
+                        <div class="telemetry-item">
+                            <span class="telemetry-label">Relative Humidity</span>
+                            <div class="telemetry-value-row">
+                                <span class="telemetry-value" id="humidity">—</span>
+                                <span class="telemetry-unit">%</span>
+                            </div>
+                            <div class="progress-bar-bg"><div class="progress-bar-fill green" id="humidityBar" style="width: 0%"></div></div>
+                        </div>
+                        <div class="telemetry-item">
+                            <span class="telemetry-label">Data Source</span>
+                            <div class="telemetry-value-row" style="margin-bottom: 6px;">
+                                <span class="status-dot online"></span>
+                                <span class="telemetry-status" id="dataSource">Loading…</span>
+                            </div>
+                            <span class="telemetry-sub" id="dataFetchedAt">—</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Geological Events Table -->
+            <div class="events-section" id="eventsSection">
+                <div class="events-header">
+                    <h2 class="events-title">Recent Geological Events</h2>
+                    <a href="alerts.html" class="view-all-link" id="viewAllLink">
+                        View All
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                </div>
+                <div class="events-table-wrapper">
+                    <table class="data-table" id="eventsTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Area</th>
+                                <th>Severity</th>
+                                <th>Casualties</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Aug 15, 2018</td>
+                                <td><strong>Madikeri</strong></td>
+                                <td><span class="badge badge-red" style="background: rgba(255, 71, 87, 0.15); border-color: rgba(255, 71, 87, 0.3);">CATASTROPHIC</span></td>
+                                <td>12</td>
+                                <td>Major landslide triggered by Kerala floods 2018. Multiple houses d...</td>
+                            </tr>
+                            <tr>
+                                <td>Aug 09, 2019</td>
+                                <td><strong>Virajpet</strong></td>
+                                <td><span class="badge badge-orange">MAJOR</span></td>
+                                <td>3</td>
+                                <td>Landslide blocked NH-275. Rescue operations took 48 hours.</td>
+                            </tr>
+                            <tr>
+                                <td>Jul 29, 2020</td>
+                                <td><strong>Somwarpet</strong></td>
+                                <td><span class="badge badge-yellow">MODERATE</span></td>
+                                <td>0</td>
+                                <td>Coffee plantation affected. No casualties but significant crop da...</td>
+                            </tr>
+                            <tr>
+                                <td>Oct 03, 2021</td>
+                                <td><strong>Kushalnagar</strong></td>
+                                <td><span class="badge badge-orange">MAJOR</span></td>
+                                <td>2</td>
+                                <td>Landslide dam created on Cauvery tributary.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="KodaguEWS Official Live Susceptibility Map - Administrative landslide risk monitoring for the Kodagu district.">
+    <title>KodaguEWS - Official Live Map</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/map.css">
+    <style>
+        .logo-highlight { color: #F5A623 !important; }
+        .navbar .nav-link.active { color: #F5A623 !important; border-color: #F5A623 !important; }
+    </style>
+</head>
+<body>
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="navbar" id="navbar">
+        <a href="official-dashboard.html" class="navbar-logo">
+            <div class="logo-icon">
+                <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+                    <circle cx="14" cy="14" r="12" stroke="#F5A623" stroke-width="2"/>
+                    <path d="M8 14 L11 10 L14 16 L17 8 L20 14" stroke="#F5A623" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <span class="logo-text">Kodagu<span class="logo-highlight">EWS</span></span>
+        </a>
+        <div class="navbar-nav">
+            <a href="official-dashboard.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                Dashboard
+            </a>
+            <a href="official-live-map.html" class="nav-link active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 10-16 0c0 3 2.7 7 8 11.7z"/></svg>
+                Live Map
+            </a>
+            <a href="official-alerts.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+                Alerts
+            </a>
+        </div>
+        <div class="navbar-user">
+            <span class="user-name" style="color: #F5A623;">👮 Official Account</span>
+            <button class="user-avatar" onclick="if(confirm('Sign out?')) window.location.href='official-auth.html'">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== MAP CONTENT ===== -->
+    <main class="page-content">
+        <div class="map-page-container">
+            <!-- Map Header -->
+            <div class="map-header" style="align-items: flex-start; margin-bottom: var(--space-6);">
+                <div class="map-header-left" style="flex-direction: column; align-items: flex-start; gap: var(--space-4);">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: 4px;">
+                            <h1 class="page-title" style="color: #fff; letter-spacing: 0.05em;">Official Susceptibility Map</h1>
+                            <span class="badge" style="background: rgba(245, 166, 35, 0.1); color: #F5A623; border: 1px solid rgba(245, 166, 35, 0.3); font-size: 0.7rem; padding: 2px 8px;">
+                                <span style="display: inline-block; width: 6px; height: 6px; background: #F5A623; border-radius: 50%; margin-right: 4px; animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;"></span>LIVE
+                            </span>
+                            <span class="badge" style="background: rgba(245, 166, 35, 0.08); color: #F5A623; border: 1px solid rgba(245, 166, 35, 0.2); font-size: 0.65rem; padding: 2px 8px;">
+                                👮 ADMIN VIEW
+                            </span>
+                        </div>
+                        <p style="color: var(--text-secondary); font-size: var(--font-size-sm);">Kodagu district - Karnataka, India • Administrative Control</p>
+                    </div>
+                    
+                    <div class="map-filters" style="display: flex; gap: var(--space-2);">
+                        <button data-filter="all" onclick="filterMap('all', this)" style="display: flex; align-items: center; gap: 6px; padding: 4px 12px; background: rgba(245,166,35,0.15); border: 1px solid rgba(245,166,35,0.3); border-radius: 20px; font-size: 13px; color: #fff; cursor: pointer;">
+                            <span style="width: 8px; height: 8px; border-radius: 50%; background: #64748b;"></span> All <span id="count-all" style="color: rgba(255,255,255,0.6);">104</span>
+                        </button>
+                        <button data-filter="low" onclick="filterMap('low', this)" style="display: flex; align-items: center; gap: 6px; padding: 4px 12px; background: transparent; border: 1px solid transparent; border-radius: 20px; font-size: 13px; color: rgba(255,255,255,0.6); cursor: pointer;">
+                            <span style="width: 8px; height: 8px; border-radius: 50%; background: #22c55e;"></span> Low <span id="count-low" style="color: rgba(255,255,255,0.4);">29</span>
+                        </button>
+                        <button data-filter="moderate" onclick="filterMap('moderate', this)" style="display: flex; align-items: center; gap: 6px; padding: 4px 12px; background: transparent; border: 1px solid transparent; border-radius: 20px; font-size: 13px; color: rgba(255,255,255,0.6); cursor: pointer;">
+                            <span style="width: 8px; height: 8px; border-radius: 50%; background: #eab308;"></span> Moderate <span id="count-moderate" style="color: rgba(255,255,255,0.4);">40</span>
+                        </button>
+                        <button data-filter="high" onclick="filterMap('high', this)" style="display: flex; align-items: center; gap: 6px; padding: 4px 12px; background: transparent; border: 1px solid transparent; border-radius: 20px; font-size: 13px; color: rgba(255,255,255,0.6); cursor: pointer;">
+                            <span style="width: 8px; height: 8px; border-radius: 50%; background: #f97316;"></span> High <span id="count-high" style="color: rgba(255,255,255,0.4);">120</span>
+                        </button>
+                        <button data-filter="critical" onclick="filterMap('critical', this)" style="display: flex; align-items: center; gap: 6px; padding: 4px 12px; background: transparent; border: 1px solid transparent; border-radius: 20px; font-size: 13px; color: rgba(255,255,255,0.6); cursor: pointer;">
+                            <span style="width: 8px; height: 8px; border-radius: 50%; background: #ef4444;"></span> Critical <span id="count-critical" style="color: rgba(255,255,255,0.4);">10</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="map-header-right" style="display: flex; align-items: center; gap: var(--space-4); margin-top: 8px;">
+                    <div style="display: flex; align-items: center; gap: var(--space-2); color: rgba(255,255,255,0.6); font-size: 13px;">
+                        <span id="last-refresh-time">13s ago</span>
+                        <button style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background: rgba(245,166,35,0.1); border: 1px solid rgba(245,166,35,0.2); border-radius: 50%; color: #F5A623; cursor: pointer;" onclick="forceRefreshData()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 102.6-6.4L2 8"/></svg>
+                        </button>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: var(--space-2);">
+                        <div style="padding: 6px 14px; background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.2); border-radius: 20px; font-size: 13px;">
+                            <span id="count-points-total" style="color: #F5A623; font-weight: 600;">104</span> <span style="color: rgba(255,255,255,0.6);">points</span>
+                        </div>
+                        <div style="padding: 6px 14px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 20px; font-size: 13px;">
+                            <span id="count-high-risk" style="color: #ef4444; font-weight: 600;">130</span> <span style="color: rgba(255,255,255,0.6);">high-risk</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Container -->
+            <div class="map-wrapper">
+                <div id="susceptibilityMap" class="map-canvas"></div>
+                <div id="map-loading-overlay">
+                    <div class="loading-spinner"></div>
+                    <div>LOADING LIVE DATA…</div>
+                </div>
+
+                <!-- Legend Overlay -->
+                <div class="map-legend" id="mapLegend" style="background: rgba(255, 255, 255, 0.95); border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); color: #111827; border-radius: 12px; padding: 16px;">
+                    <h4 class="legend-title" style="color: #6B7280; margin-bottom: 12px;">RISK LEVEL</h4>
+                    <div class="legend-items" style="gap: 10px;">
+                        <div class="legend-item" style="color: #374151;">
+                            <span class="legend-dot" style="background: var(--severity-low);"></span>
+                            <span>Low</span>
+                        </div>
+                        <div class="legend-item" style="color: #374151;">
+                            <span class="legend-dot" style="background: var(--severity-moderate);"></span>
+                            <span>Moderate</span>
+                        </div>
+                        <div class="legend-item" style="color: #374151;">
+                            <span class="legend-dot" style="background: var(--severity-high);"></span>
+                            <span>High</span> <span style="font-size: 11px; color: #9CA3AF; margin-left: 4px;">• pulse</span>
+                        </div>
+                        <div class="legend-item" style="color: #374151;">
+                            <span class="legend-dot" style="background: var(--severity-catastrophic);"></span>
+                            <span>Critical</span> <span style="font-size: 11px; color: #9CA3AF; margin-left: 4px;">• pulse</span>
+                        </div>
+                        <div style="height: 1px; background: #E5E7EB; margin: 4px 0;"></div>
+                        <div class="legend-item" style="color: #6B7280; font-size: 13px;">
+                            <div style="width: 14px; height: 14px; border: 1.5px dashed #F5A623; border-radius: 2px;"></div>
+                            <span>Kodagu district</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sensor Count Overlay -->
+                <div class="map-sensor-count" id="sensorOverlay" style="background: rgba(31, 41, 55, 0.9); border: none; color: #D1D5DB; border-radius: 20px; font-size: 13px; font-weight: 500; padding: 6px 16px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F5A623" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <span><span style="color: #F5A623;">Kodagu, Karnataka</span> • 104 stations • <span style="color: #F5A623;">OFFICIAL</span></span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
+    <script>
+        // Official map uses #F5A623 for the district polygon border
+        const OFFICIAL_POLYGON_COLOR = '#F5A623';
+    </script>
+    <script src="../js/map.js"></script>
+</body>
+</html>

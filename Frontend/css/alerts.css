@@ -1,0 +1,288 @@
+/* ============================================================
+   KodaguEWS - Alerts & History Styles
+   ============================================================ */
+
+/* ---- Section Header ---- */
+.section-header {
+    margin-bottom: var(--space-5);
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.section-title svg {
+    color: var(--primary);
+}
+
+/* ---- Broadcasts Section ---- */
+.alerts-broadcasts {
+    margin-bottom: var(--space-8);
+    animation: fadeInUp 0.5s ease;
+}
+
+/* Broadcast Card */
+.broadcast-card {
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    border: 1px solid var(--border-primary);
+    transition: all var(--transition-base);
+}
+
+.broadcast-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.broadcast-green {
+    background: linear-gradient(180deg, rgba(0, 217, 166, 0.1) 0%, var(--bg-card) 40%);
+    border-color: rgba(0, 217, 166, 0.2);
+}
+
+.broadcast-yellow {
+    background: linear-gradient(180deg, rgba(245, 197, 66, 0.1) 0%, var(--bg-card) 40%);
+    border-color: rgba(245, 197, 66, 0.2);
+}
+
+.broadcast-red {
+    background: linear-gradient(180deg, rgba(255, 71, 87, 0.1) 0%, var(--bg-card) 40%);
+    border-color: rgba(255, 71, 87, 0.2);
+}
+
+/* Broadcast Header */
+.broadcast-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4) var(--space-6);
+    border-bottom: 1px solid var(--border-secondary);
+}
+
+.pulse-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: var(--radius-full);
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.pulse-dot.green { background: var(--alert-green); }
+.pulse-dot.red { background: var(--alert-red); }
+
+.broadcast-meta {
+    display: flex;
+    gap: var(--space-6);
+}
+
+/* Broadcast Body */
+.broadcast-body {
+    padding: var(--space-6);
+}
+
+.broadcast-title {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--space-2);
+    letter-spacing: 0.02em;
+}
+
+.broadcast-desc {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-5);
+}
+
+.broadcast-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+/* Advisory */
+.broadcast-advisory {
+    padding: var(--space-4) var(--space-6) var(--space-6);
+}
+
+.advisory-title {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-3);
+}
+
+.advisory-items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.advisory-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    background: var(--primary-subtle);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+}
+
+.advisory-item:hover {
+    background: var(--primary-light);
+}
+
+.advisory-item svg {
+    color: var(--primary);
+    flex-shrink: 0;
+}
+
+/* ---- Incident Logs Section ---- */
+.incident-logs {
+    animation: fadeInUp 0.5s ease 0.15s both;
+}
+
+.incident-card {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-5);
+    padding: var(--space-5) var(--space-6);
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-xl);
+    margin-bottom: var(--space-4);
+    transition: all var(--transition-base);
+    animation: fadeInUp 0.4s ease both;
+}
+
+.incident-card:nth-child(2) { animation-delay: 0.1s; }
+.incident-card:nth-child(3) { animation-delay: 0.2s; }
+.incident-card:nth-child(4) { animation-delay: 0.3s; }
+
+.incident-card:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+/* Incident Date Badge */
+.incident-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    flex-shrink: 0;
+}
+
+.date-month {
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1;
+}
+
+.date-day {
+    font-size: var(--font-size-xl);
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+/* Incident Content */
+.incident-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.incident-header-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-1);
+}
+
+.incident-title {
+    font-size: var(--font-size-md);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.incident-meta-row {
+    display: flex;
+    gap: var(--space-4);
+    margin-bottom: var(--space-2);
+}
+
+.incident-meta-item {
+    font-size: var(--font-size-xs);
+    color: var(--text-tertiary);
+}
+
+.incident-desc {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Expand Button */
+.incident-expand-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    background: rgba(255, 71, 87, 0.08);
+    border: 1px solid rgba(255, 71, 87, 0.2);
+    border-radius: var(--radius-lg);
+    color: var(--alert-red);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+    min-width: 100px;
+}
+
+.incident-expand-btn:hover {
+    background: rgba(255, 71, 87, 0.15);
+    border-color: rgba(255, 71, 87, 0.4);
+    transform: scale(1.02);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+    .broadcast-card-header {
+        flex-direction: column;
+        gap: var(--space-3);
+        align-items: flex-start;
+    }
+
+    .broadcast-meta {
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+
+    .incident-card {
+        flex-direction: column;
+    }
+
+    .incident-date {
+        width: auto;
+        height: auto;
+        flex-direction: row;
+        gap: var(--space-2);
+        padding: var(--space-2) var(--space-3);
+    }
+}
