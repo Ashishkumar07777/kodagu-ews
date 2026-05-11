@@ -47,7 +47,7 @@
 
         <div class="navbar-user">
             <span class="user-name" style="color: #F5A623;">👮 Official Account</span>
-            <button class="user-avatar" onclick="if(confirm('Sign out?')) window.location.href='official-auth.html'">
+            <button class="user-avatar" onclick="window.officialSignOut()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
             </button>
         </div>
@@ -167,8 +167,31 @@
         </div>
     </main>
 
-    <script>
+    <script type="module">
+        import { auth } from '../js/firebase-config.js';
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = 'official-auth.html';
+            } else {
+                localStorage.setItem('userDisplayName', user.displayName || 'Official Account');
+                updateUserProfile();
+            }
+        });
+
+        window.officialSignOut = function() {
+            if(confirm('Sign out?')) {
+                signOut(auth).then(() => {
+                    window.location.href='official-auth.html';
+                });
+            }
+        };
+
         const API_BASE_URL = 'https://kodagu-ews-backend-v894.onrender.com';
+
+        window.updateSmsPreview = updateSmsPreview;
+        window.blastSMS = blastSMS;
 
         document.addEventListener('DOMContentLoaded', () => {
             updateSmsPreview();

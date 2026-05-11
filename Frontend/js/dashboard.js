@@ -5,6 +5,21 @@
 
 const API_BASE_URL = 'https://kodagu-ews-backend-v894.onrender.com';
 
+import { auth } from './firebase-config.js';
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+// ---- Firebase Auth Protection ----
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        // Kick them out if not logged in
+        window.location.href = 'index.html';
+    } else {
+        // Logged in securely
+        localStorage.setItem('userDisplayName', user.displayName || 'Citizen');
+        updateUserProfile();
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     updateClock();
     setInterval(updateClock, 1000);
@@ -171,8 +186,12 @@ function getSeverityColor(severity) {
 }
 
 // ---- User Menu Toggle ----
-function toggleUserMenu() {
+window.toggleUserMenu = function() {
     if (confirm('Sign out?')) {
-        window.location.href = 'index.html';
+        signOut(auth).then(() => {
+            window.location.href = 'index.html';
+        }).catch((error) => {
+            console.error("Sign out error", error);
+        });
     }
 }

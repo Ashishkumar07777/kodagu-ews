@@ -1,10 +1,17 @@
 /* ============================================================
    KodaguEWS - Auth Page JavaScript
-   Handles tab switching, form validation, password toggle
+   Handles tab switching, form validation, password toggle, and Firebase Auth
    ============================================================ */
 
+import { auth } from './firebase-config.js';
+import { 
+    signInWithEmailAndPassword, 
+    createUserWithEmailAndPassword, 
+    updateProfile 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
 // ---- Tab Switching ----
-function switchTab(tab) {
+window.switchTab = function(tab) {
     const signinTab = document.getElementById('signinTab');
     const registerTab = document.getElementById('registerTab');
     const signinForm = document.getElementById('signinForm');
@@ -30,14 +37,14 @@ function switchTab(tab) {
 }
 
 // ---- Method Toggle (Email / Phone) ----
-function switchMethod(method) {
+window.switchMethod = function(method) {
     const btns = document.querySelectorAll('.method-btn');
     btns.forEach(b => b.classList.remove('active'));
     event.target.closest('.method-btn').classList.add('active');
 }
 
 // ---- Password Visibility Toggle ----
-function togglePassword(inputId) {
+window.togglePassword = function(inputId) {
     const input = document.getElementById(inputId);
     if (input.type === 'password') {
         input.type = 'text';
@@ -47,108 +54,106 @@ function togglePassword(inputId) {
 }
 
 // ---- Form Handlers ----
-function handleSignin(e) {
+window.handleSignin = async function(e) {
     e.preventDefault();
     const btn = document.getElementById('signinBtn');
     const email = document.getElementById('signinEmail').value;
+    const password = document.getElementById('signinPassword').value;
+    
+    const originalBtnHTML = btn.innerHTML;
     btn.innerHTML = '<div class="spinner"></div> Signing in...';
     btn.disabled = true;
 
-    // Save name to localStorage (extract from email if not found)
-    const name = email.split('@')[0].split('.').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
-    localStorage.setItem('userDisplayName', name || "Citizen User");
-
-    // Simulate API call
-    setTimeout(() => {
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        localStorage.setItem('userDisplayName', userCredential.user.displayName || email.split('@')[0]);
         window.location.href = 'dashboard.html';
-    }, 1500);
-}
-
-// ---- OTP Verification ----
-let generatedOTP = null;
-
-function sendOTP() {
-    const emailInput = document.getElementById('regEmail');
-    if (!emailInput.value) {
-        alert("Please enter your email first.");
-        return;
+    } catch (error) {
+        alert("Sign in failed: " + error.message);
+        btn.innerHTML = originalBtnHTML;
+        btn.disabled = false;
     }
-    
-    // Generate a 6-digit OTP
-    generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
-    
-    // Show the OTP group
-    document.getElementById('otpGroup').style.display = 'block';
-    
-    // In DEV MODE, show the OTP on screen
-    const devDisplay = document.getElementById('devOtpDisplay');
-    document.getElementById('devOtpValue').textContent = generatedOTP;
-    devDisplay.style.display = 'block';
-    
-    // Change button text
-    const btn = document.querySelector('.verify-btn');
-    if (btn) btn.textContent = "Resend Code";
-    
-    // Log to console as requested
-    console.log("[DEV] Sent OTP to " + emailInput.value + ": " + generatedOTP);
 }
 
-function handleRegister(e) {
+// ---- Firebase Registration ----
+window.handleRegister = async function(e) {
     e.preventDefault();
-    
-    // Verify OTP
-    const enteredOtp = document.getElementById('regOtp').value;
-    if (!generatedOTP) {
-        alert("Please click 'Send Code' to verify your email first.");
-        return;
-    }
-    if (enteredOtp !== generatedOTP) {
-        alert("Invalid OTP! Please check the code and try again.");
-        return;
-    }
-
     const name = document.getElementById('regName').value;
-    localStorage.setItem('userDisplayName', name);
+    const email = document.getElementById('regEmail').value;
+    const password = document.getElementById('regPassword').value;
 
     const btn = document.getElementById('registerBtn');
+    const originalBtnHTML = btn.innerHTML;
     btn.innerHTML = '<div class="spinner"></div> Creating Account...';
     btn.disabled = true;
 
-    setTimeout(() => {
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(userCredential.user, { displayName: name });
+        localStorage.setItem('userDisplayName', name);
         window.location.href = 'dashboard.html';
-    }, 1500);
+    } catch (error) {
+        alert("Registration failed: " + error.message);
+        btn.innerHTML = originalBtnHTML;
+        btn.disabled = false;
+    }
+}
+
+// (For backward compatibility with the HTML, if it tries to call sendOTP)
+window.sendOTP = function() {
+    alert("OTP verification is bypassed in this version. Just enter your email and password to register.");
 }
 
 // ---- Official Sign In ----
-function handleOfficialSignin(e) {
+window.handleOfficialSignin = async function(e) {
     e.preventDefault();
     const btn = document.getElementById('officialSigninBtn');
     const email = document.getElementById('officialEmail').value;
+    const password = document.getElementById('officialPassword').value;
+
+    const originalBtnHTML = btn.innerHTML;
     btn.innerHTML = '<div class="spinner"></div> Authenticating...';
     btn.disabled = true;
 
-    // Save name to localStorage
-    const name = email.split('@')[0].split('.').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ');
-    localStorage.setItem('userDisplayName', name || "Official Account");
-
-    setTimeout(() => {
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        localStorage.setItem('userDisplayName', userCredential.user.displayName || "Official Account");
         window.location.href = 'official-dashboard.html';
-    }, 1500);
+    } catch (error) {
+        alert("Authentication failed: " + error.message);
+        btn.innerHTML = originalBtnHTML;
+        btn.disabled = false;
+    }
 }
 
-function handleOfficialRegister(e) {
+window.handleOfficialRegister = async function(e) {
     e.preventDefault();
     const btn = document.getElementById('officialRegisterBtn');
     const name = document.getElementById('offRegName').value;
-    
+    const email = document.getElementById('offRegEmail').value;
+    const password = document.getElementById('offRegPassword').value;
+    const code = document.getElementById('offRegCode').value;
+
+    // Simulate official invite code check
+    if (code !== "KODAGU2025" && code !== "GOVT-EWS") {
+        alert("Invalid Official Invite Code.");
+        return;
+    }
+
+    const originalBtnHTML = btn.innerHTML;
     btn.innerHTML = '<div class="spinner"></div> Registering...';
     btn.disabled = true;
 
-    localStorage.setItem('userDisplayName', name);
-
-    setTimeout(() => {
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(userCredential.user, { displayName: name });
+        localStorage.setItem('userDisplayName', name);
         window.location.href = 'official-dashboard.html';
-    }, 1500);
+    } catch (error) {
+        alert("Registration failed: " + error.message);
+        btn.innerHTML = originalBtnHTML;
+        btn.disabled = false;
+    }
 }
 
 // ---- Add input focus animations ----
