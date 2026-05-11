@@ -115,7 +115,7 @@ function updateUserProfile() {
 }
 
 // ---- Execute Prediction ----
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = '';
 
 async function executePrediction() {
     const btn = document.getElementById('executeBtn');

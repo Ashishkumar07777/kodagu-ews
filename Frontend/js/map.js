@@ -30,7 +30,7 @@ function updateUserProfile() {
 
 let map;
 let markersLayer;
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = '';
 
 let seed = 42;
 function random() {

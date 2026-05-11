@@ -21,12 +21,12 @@ const rootDir = path.join(__dirname, '..');
 console.log(`[KodaguEWS] Project root: ${rootDir}`);
 
 // Serve static files from the frontend directory
-app.use(express.static(path.join(rootDir, 'frontend')));
+app.use(express.static(path.join(rootDir, 'Frontend')));
 
 // Explicitly serve key directories from the frontend folder
-app.use('/html', express.static(path.join(rootDir, 'frontend', 'html')));
-app.use('/css', express.static(path.join(rootDir, 'frontend', 'css')));
-app.use('/js', express.static(path.join(rootDir, 'frontend', 'js')));
+app.use('/html', express.static(path.join(rootDir, 'Frontend', 'html')));
+app.use('/css', express.static(path.join(rootDir, 'Frontend', 'css')));
+app.use('/js', express.static(path.join(rootDir, 'Frontend', 'js')));
 
 // Redirect root to index.html
 app.get('/', (req, res) => {

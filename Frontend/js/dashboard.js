@@ -3,7 +3,7 @@
    Live clock, user menu, and dynamic updates
    ============================================================ */
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = '';
 
 document.addEventListener('DOMContentLoaded', () => {
     updateClock();

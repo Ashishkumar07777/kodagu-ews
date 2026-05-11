@@ -179,7 +179,7 @@
                 const advisoryItems = document.getElementById('advisoryItems');
                 
                 // Fetch intelligence input from the ML Model API
-                const response = await fetch(`http://localhost:3000/api/landslide/alerts`);
+                const response = await fetch(`/api/landslide/alerts`);
                 const data = await response.json();
                 
                 // Set the timestamp UI
