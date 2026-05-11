@@ -9,7 +9,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: url('file:///C:/Users/user/.gemini/antigravity/brain/09ae546a-a900-4985-a7c2-7f456ee1c121/media__1777984759843.jpg') center/cover no-repeat fixed;
+    background: url('../assest/login-bg.jpg') center/cover no-repeat fixed;
     position: relative;
 }
 
@@ -504,6 +504,28 @@
 
 .image-overlay {
     display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+/* Citizen variant - side panel image */
+.auth-page:not(.official) .auth-image-panel {
+    background: url('../assest/citizen-panel-bg.jpg') center/cover no-repeat;
+    border-top-right-radius: var(--radius-2xl);
+    border-bottom-right-radius: var(--radius-2xl);
+    overflow: hidden;
+}
+
+.auth-page:not(.official) .image-overlay {
+    display: block;
+    background: linear-gradient(
+        180deg,
+        rgba(10, 14, 23, 0.2) 0%,
+        rgba(10, 14, 23, 0.4) 40%,
+        rgba(10, 14, 23, 0.8) 80%,
+        rgba(10, 14, 23, 0.95) 100%
+    );
 }
 
 /* Official variant - map overlay */
