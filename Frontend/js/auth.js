@@ -7,7 +7,11 @@ import { auth } from './firebase-config.js';
 import { 
     signInWithEmailAndPassword, 
     createUserWithEmailAndPassword, 
-    updateProfile 
+    updateProfile,
+    GoogleAuthProvider,
+    signInWithPopup,
+    sendEmailVerification,
+    signOut
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 // ---- Tab Switching ----
@@ -66,6 +70,16 @@ window.handleSignin = async function(e) {
 
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        
+        // Enforce Email Verification
+        if (!userCredential.user.emailVerified) {
+            await signOut(auth);
+            alert("Please verify your email address before signing in. Check your inbox.");
+            btn.innerHTML = originalBtnHTML;
+            btn.disabled = false;
+            return;
+        }
+
         localStorage.setItem('userDisplayName', userCredential.user.displayName || email.split('@')[0]);
         window.location.href = 'dashboard.html';
     } catch (error) {
@@ -90,10 +104,45 @@ window.handleRegister = async function(e) {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         await updateProfile(userCredential.user, { displayName: name });
-        localStorage.setItem('userDisplayName', name);
-        window.location.href = 'dashboard.html';
+        
+        // Send Email Verification
+        await sendEmailVerification(userCredential.user);
+        
+        // Sign them out immediately so they must verify before accessing the dashboard
+        await signOut(auth);
+        
+        alert("Registration successful! Please check your email to verify your account before logging in.");
+        
+        // Reset form and switch to sign in tab
+        document.querySelector('#registerForm form').reset();
+        window.switchTab('signin');
+        
+        btn.innerHTML = originalBtnHTML;
+        btn.disabled = false;
     } catch (error) {
         alert("Registration failed: " + error.message);
+        btn.innerHTML = originalBtnHTML;
+        btn.disabled = false;
+    }
+}
+
+// ---- Google Sign In ----
+window.handleGoogleSignin = async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('googleSigninBtn');
+    const originalBtnHTML = btn.innerHTML;
+    btn.innerHTML = '<div class="spinner"></div> Connecting...';
+    btn.disabled = true;
+
+    try {
+        const provider = new GoogleAuthProvider();
+        const userCredential = await signInWithPopup(auth, provider);
+        
+        // Google emails are automatically verified
+        localStorage.setItem('userDisplayName', userCredential.user.displayName);
+        window.location.href = 'dashboard.html';
+    } catch (error) {
+        alert("Google Sign In failed: " + error.message);
         btn.innerHTML = originalBtnHTML;
         btn.disabled = false;
     }
