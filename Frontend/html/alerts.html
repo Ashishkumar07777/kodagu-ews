@@ -179,7 +179,7 @@
                 const advisoryItems = document.getElementById('advisoryItems');
                 
                 // Fetch intelligence input from the ML Model API
-                const response = await fetch(`/api/landslide/alerts`);
+                const response = await fetch(`https://kodagu-ews-backend-v894.onrender.com/api/landslide/alerts`);
                 const data = await response.json();
                 
                 // Set the timestamp UI

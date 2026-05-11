@@ -115,7 +115,7 @@ function updateUserProfile() {
 }
 
 // ---- Execute Prediction ----
-const API_BASE_URL = '';
+const API_BASE_URL = 'https://kodagu-ews-backend-v894.onrender.com';
 
 async function executePrediction() {
     const btn = document.getElementById('executeBtn');

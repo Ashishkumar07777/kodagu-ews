@@ -3,7 +3,7 @@
    Live clock, user menu, and dynamic updates
    ============================================================ */
 
-const API_BASE_URL = '';
+const API_BASE_URL = 'https://kodagu-ews-backend-v894.onrender.com';
 
 document.addEventListener('DOMContentLoaded', () => {
     updateClock();

@@ -30,7 +30,7 @@ function updateUserProfile() {
 
 let map;
 let markersLayer;
-const API_BASE_URL = '';
+const API_BASE_URL = 'https://kodagu-ews-backend-v894.onrender.com';
 
 let seed = 42;
 function random() {
