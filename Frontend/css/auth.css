@@ -9,7 +9,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: url('../assest/login-bg.jpg') center/cover no-repeat fixed;
+    background: url('../assest/20-x-8-ft-Panel-Coorg-01-1-scaled-e1750312229824.jpeg') center/cover no-repeat fixed;
     position: relative;
 }
 
@@ -511,7 +511,7 @@
 
 /* Citizen variant - side panel image */
 .auth-page:not(.official) .auth-image-panel {
-    background: url('../assest/citizen-panel-bg.jpg') center/cover no-repeat;
+    background: url('../assest/m_coorg_tv_destination_img_2_l_1049_1573.jpeg') center/cover no-repeat;
     border-top-right-radius: var(--radius-2xl);
     border-bottom-right-radius: var(--radius-2xl);
     overflow: hidden;
